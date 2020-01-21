@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Panda - ACRV</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Panda";
+    var mkdocs_page_input_path = "panda.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> ACRV</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Panda</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#panda-emika">Panda Emika</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#setup">Setup</a></li>
+        
+            <li><a class="toctree-l3" href="#usage">Usage</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">ACRV</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Panda</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="panda-emika">Panda Emika</h1>
+<h2 id="setup">Setup</h2>
+<p>These setup instructions assume that you have already added the <a href="/">Robotic Vision repositories</a></p>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Ubuntu 18.04</li>
+<li>ROS Melodic</li>
+</ul>
+<h3 id="installing-ros">Installing ROS</h3>
+<p>Follow the installation instructions provided for <a href="http://wiki.ros.org/melodic/Installation/Ubuntu#Installation">ROS Melodic</a>.</p>
+<p><em>Note: We recommend installing either the desktop or desktop-full distribution</em></p>
+<h3 id="setting-up-the-real-time-kernel">Setting up the Real-Time Kernel</h3>
+<p>To install the real-time kernel run the following command:</p>
+<pre><code>sudo apt install linux-image-5.0.21-rt16 linux-headers-5.0.21-rt16
+</code></pre>
+
+<p>Add the user to the realtime group</p>
+<pre><code>sudo addgroup realtime
+sudo usermod -a -G realtime $(whoami)
+</code></pre>
+
+<p>Add the following limits to the <em>realtime</em> group in <code>/etc/security/limits.conf</code></p>
+<pre><code>@realtime soft rtprio 99
+@realtime soft priority 99
+@realtime soft memlock 102400
+@realtime hard rtprio 99
+@realtime hard priority 99
+@realtime hard memlock 102400
+</code></pre>
+
+<p>Reboot your machine then run the following command to make sure that you are using the RT kernel.</p>
+<pre><code>uname -a
+</code></pre>
+
+<p>The output of the command should contain 5.0.21-rt16 #1 SMP PREEMPT RT</p>
+<h3 id="installing-the-rv-panda-driver">Installing the RV Panda Driver</h3>
+<p>Install the RV Panda Driver by running the command:</p>
+<pre><code>sudo apt install ros-melodic-rv-panda-driver
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+<h3 id="starting-the-rv-panda-driver">Starting the RV Panda Driver</h3>
+<pre><code>roslaunch rv_panda_driver robot_bringup.launch
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
