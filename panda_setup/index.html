@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Panda - ACRV</title>
+  <title>Setup - ACRV</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Panda";
-    var mkdocs_page_input_path = "panda.md";
+    var mkdocs_page_name = "Setup";
+    var mkdocs_page_input_path = "panda_setup.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -53,22 +53,47 @@
     <a class="" href="..">Home</a>
 	    </li>
           
-            <li class="toctree-l1 current">
+            <li class="toctree-l1">
 		
-    <a class="current" href="./">Panda</a>
+    <span class="caption-text">Panda</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Setup</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#panda-emika">Panda Emika</a></li>
+    <li class="toctree-l3"><a href="#setup">Setup</a></li>
     
         <ul>
         
-            <li><a class="toctree-l3" href="#setup">Setup</a></li>
+            <li><a class="toctree-l4" href="#requirements">Requirements</a></li>
         
-            <li><a class="toctree-l3" href="#usage">Usage</a></li>
+            <li><a class="toctree-l4" href="#installing-ros">Installing ROS</a></li>
+        
+            <li><a class="toctree-l4" href="#setting-up-the-real-time-kernel">Setting up the Real-Time Kernel</a></li>
+        
+            <li><a class="toctree-l4" href="#installing-the-rv-panda-driver">Installing the RV Panda Driver</a></li>
         
         </ul>
     
 
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../rv_panda_driver/">RV Panda Driver</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Misc</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../rv_manipulation_driver/">RV Manipulation Driver</a>
+                </li>
     </ul>
 	    </li>
           
@@ -93,8 +118,12 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Panda &raquo;</li>
+        
+      
     
-    <li>Panda</li>
+    <li>Setup</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -104,28 +133,27 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="panda-emika">Panda Emika</h1>
-<h2 id="setup">Setup</h2>
+                <h1 id="setup">Setup</h1>
 <p>These setup instructions assume that you have already added the <a href="/">Robotic Vision repositories</a></p>
-<h3 id="requirements">Requirements</h3>
+<h2 id="requirements">Requirements</h2>
 <ul>
 <li>Ubuntu 18.04</li>
 <li>ROS Melodic</li>
 </ul>
-<h3 id="installing-ros">Installing ROS</h3>
+<h2 id="installing-ros">Installing ROS</h2>
 <p>Follow the installation instructions provided for <a href="http://wiki.ros.org/melodic/Installation/Ubuntu#Installation">ROS Melodic</a>.</p>
 <p><em>Note: We recommend installing either the desktop or desktop-full distribution</em></p>
-<h3 id="setting-up-the-real-time-kernel">Setting up the Real-Time Kernel</h3>
+<h2 id="setting-up-the-real-time-kernel">Setting up the Real-Time Kernel</h2>
 <p>To install the real-time kernel run the following command:</p>
-<pre><code>sudo apt install linux-image-5.0.21-rt16 linux-headers-5.0.21-rt16
+<pre><code class="bash">sudo apt install linux-image-5.0.21-rt16 linux-headers-5.0.21-rt16
 </code></pre>
 
 <p>Add the user to the realtime group</p>
-<pre><code>sudo addgroup realtime
+<pre><code class="bash">sudo addgroup realtime
 sudo usermod -a -G realtime $(whoami)
 </code></pre>
 
-<p>Add the following limits to the <em>realtime</em> group in <code>/etc/security/limits.conf</code></p>
+<p>Add the following limits to the realtime group in <code>/etc/security/limits.conf</code></p>
 <pre><code>@realtime soft rtprio 99
 @realtime soft priority 99
 @realtime soft memlock 102400
@@ -135,18 +163,13 @@ sudo usermod -a -G realtime $(whoami)
 </code></pre>
 
 <p>Reboot your machine then run the following command to make sure that you are using the RT kernel.</p>
-<pre><code>uname -a
+<pre><code class="bash">uname -a
 </code></pre>
 
 <p>The output of the command should contain 5.0.21-rt16 #1 SMP PREEMPT RT</p>
-<h3 id="installing-the-rv-panda-driver">Installing the RV Panda Driver</h3>
+<h2 id="installing-the-rv-panda-driver">Installing the RV Panda Driver</h2>
 <p>Install the RV Panda Driver by running the command:</p>
-<pre><code>sudo apt install ros-melodic-rv-panda-driver
-</code></pre>
-
-<h2 id="usage">Usage</h2>
-<h3 id="starting-the-rv-panda-driver">Starting the RV Panda Driver</h3>
-<pre><code>roslaunch rv_panda_driver robot_bringup.launch
+<pre><code class="bash">sudo apt install ros-melodic-rv-panda-driver
 </code></pre>
               
             </div>
@@ -154,6 +177,8 @@ sudo usermod -a -G realtime $(whoami)
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../rv_panda_driver/" class="btn btn-neutral float-right" title="RV Panda Driver">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -184,6 +209,8 @@ sudo usermod -a -G realtime $(whoami)
       
         <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../rv_panda_driver/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
