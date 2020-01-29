@@ -141,6 +141,7 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="first-level active"><a href="#installing-software">Installing Software</a></li>
+        <li class="first-level "><a href="#resolving-rosdep-issues">Resolving Rosdep Issues</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -156,7 +157,17 @@
 
 <p>Update your packages list</p>
 <pre><code class="bash">sudo apt update
-</code></pre></div>
+</code></pre>
+
+<h1 id="resolving-rosdep-issues">Resolving Rosdep Issues</h1>
+<p>rosdep provides a useful mechanism for retrieving system dependencies required to build ROS packages from source. However, the list of packages maintained by the official ROS index is rather limited.</p>
+<p>As part of developing our Robotic Vision libraries we have frequently discovered dependencies that were simply not available via rosdep. To resolve this issue we have created our own index compliment that provided by ROS.</p>
+<p>To use rosdep to install depencencies needed for building the Robotic Vision libraries from source, please run the following command:</p>
+<pre><code class="bash">sudo sh -c 'echo &quot;yaml https://bitbucket.org/acrv/rv_package_list/raw/HEAD/bionic/sources.yaml&quot; &gt;&gt; /etc/ros/rosdep/sources.list.d/20-default.list'
+rosdep update
+</code></pre>
+
+<p><strong>Note:</strong> This assumes that you have previously installed ROS and have run <code>rosdep init</code></p></div>
         
         
     </div>
@@ -251,5 +262,5 @@
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2020-01-28 00:56:16
+Build Date UTC : 2020-01-29 05:47:00
 -->
