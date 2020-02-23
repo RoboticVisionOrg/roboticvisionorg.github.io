@@ -171,8 +171,7 @@
 <h1 id="qut-panda-driver">QUT Panda Driver</h1>
 <h2 id="overview">Overview</h2>
 <p>The Panda Driver provides a series of components for initalising and controlling the Franka-Emika Panda robotic arm.</p>
-<p>This package provides a simplified interface for controlling the arm in in a variety of articulation modes by extending the <a href="https://bitbucket.org/acrv/rv_manipulation_driver">RV Manipulation Driver</a> package.</p>
-<p>![System Diagram] (docs/Panda.png)</p>
+<p>This package provides a simplified interface for controlling the arm in in a variety of articulation modes by extending the <a href="https://github.com/roboticvisionorg/rv_manipulation_driver">RV Manipulation Driver</a> package.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="launching-the-driver">Launching the driver</h3>
 <p>The Panda Driver can be launched by executing the following command:</p>
@@ -302,7 +301,7 @@ Moves the end-effector in cartesian space w.r.t. the target frame_id (base frame
 </ul>
 <h3 id="publish-topics">Publish Topics</h3>
 <ul>
-<li><strong>/arm/state</strong>  (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/msg/ManipulatorState.msg">rv_msgs/ManipulatorState</a>)
+<li><strong>/arm/state</strong>  (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/msg/ManipulatorState.msg">rv_msgs/ManipulatorState</a>)
 Provides information on the current state of the manipulator including the pose of the end-effector w.r.t. to the base link, whether the manipulator is experiencing a cartesian contact and collision as a bit-wised error state flag.</li>
 </ul>
 <h3 id="services">Services</h3>
@@ -320,36 +319,36 @@ Recovers from collision or limit violation error states that will put the robot 
 Stops the current motion of the current.</p>
 </li>
 <li>
-<p><strong>/arm/get_named_poses</strong> (rv_msgs/GetNamesList](https://bitbucket.org/acrv/rv_msgs/src/master/srv/GetNamesList.srv))
+<p><strong>/arm/get_named_poses</strong> (rv_msgs/GetNamesList](https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetNamesList.srv))
 Gets a list of currently stored named poses (includes both moveit and driver stored named poses).</p>
 </li>
 <li>
-<p><strong>/arm/set_named_pose</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/srv/SetNamedPose.srv">rv_msgs/SetNamedPose</a>)
+<p><strong>/arm/set_named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetNamedPose.srv">rv_msgs/SetNamedPose</a>)
 Saves the current joint configuration of the panda with the provided pose name.</p>
 </li>
 <li>
-<p><strong>/arm/set_cartesian_impedance</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/srv/SetCartesianImpedance.srv">rv_msgs/SetCartesianImpedance</a>
+<p><strong>/arm/set_cartesian_impedance</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetCartesianImpedance.srv">rv_msgs/SetCartesianImpedance</a>
 Adjusts the impedenace of the end-effector position in cartesian space.</p>
 </li>
 <li>
-<p><strong>/arm/get_link_position</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/srv/GetRelativePose.srv">rv_msgs/GetRelativePose</a>)
+<p><strong>/arm/get_link_position</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetRelativePose.srv">rv_msgs/GetRelativePose</a>)
 A convenience wrapper around the ROS transform lookup service that provides the relative pose of a target frame w.r.t. a reference frame.</p>
 </li>
 </ul>
 <h3 id="action-api">Action API</h3>
 <h4 id="pose-control">Pose Control</h4>
 <ul>
-<li><strong>/arm/cartesian/pose</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToPose.action">rv_msgs/MoveToPose.action</a>)
+<li><strong>/arm/cartesian/pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPose.action</a>)
 Moves the end-effector to the requested goal pose w.r.t. the base frame.</li>
 </ul>
 <h4 id="named-pose-control">Named Pose Control</h4>
 <ul>
-<li><strong>/arm/cartesian/named_pose</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPose.action</a>)
+<li><strong>/arm/cartesian/named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPose.action</a>)
 Moves the end-effector to a pre-defined joint configuration.</li>
 </ul>
 <h4 id="gripper">Gripper</h4>
 <ul>
-<li><strong>/arm/gripper</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/ActuateGripper.action">rv_msgs/ActuateGripper.action</a>)
+<li><strong>/arm/gripper</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ActuateGripper.action">rv_msgs/ActuateGripper.action</a>)
 Actuates the gripper based on the requested mode. The static mode will move the gripper to the requested width. The grasp mode will attempt to grasp an object of width plus/minus a tolernace factor.</li>
 </ul></div>
         

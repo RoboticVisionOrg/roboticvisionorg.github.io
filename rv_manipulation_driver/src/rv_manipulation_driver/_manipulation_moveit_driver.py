@@ -109,6 +109,14 @@ class ManipulationMoveItDriver(object):
     self.active_group.stop()
     return success
 
+  def get_planner_ee_link(self, group_name=None):
+    if group_name:
+        self.set_group(group_name)
+    if not self.active_group:
+        raise ValueError('No active Planning Group')
+
+    return self.active_group.get_end_effector_link()
+
       
   def set_gripper(self, width, speed=0.1, wait=True):
     raise NotImplementedError()

@@ -14,10 +14,12 @@ import xml.etree.ElementTree as ET
 from ._control_switcher import ControlSwitcher
 from ._action_proxy import ActionProxy
 from ._manipulation_moveit_driver import ManipulationMoveItDriver
+from ._transforms import tf_to_trans, pose_msg_to_trans, trans_to_pose_msg
 
-from std_srvs.srv import Empty
-from geometry_msgs.msg import PoseStamped, TwistStamped, Twist
+from std_srvs.srv import Empty, SetBool, SetBoolResponse
+from geometry_msgs.msg import PoseStamped, Pose, TwistStamped, Twist
 
+from rv_msgs.msg import JointVelocity
 from rv_msgs.msg import ManipulatorState
 from rv_msgs.msg import MoveToPoseAction, MoveToPoseResult
 from rv_msgs.msg import MoveToNamedPoseAction, MoveToNamedPoseResult
@@ -26,6 +28,8 @@ from rv_msgs.srv import GetNamesList, GetNamesListResponse, SetNamedPose, SetNam
 from rv_msgs.srv import GetRelativePose, GetRelativePoseResponse
 from rv_msgs.srv import SetCartesianImpedance, SetCartesianImpedanceResponse
 from rv_msgs.srv import SetNamedPoseConfig, GetNamedPoseConfigs
+from rv_msgs.srv import SetPose, SetPoseResponse
+from rv_msgs.srv import SimpleRequest, SimpleRequestResponse
 
 class ManipulationDriver(object):
 
@@ -36,10 +40,12 @@ class ManipulationDriver(object):
     self.controllers = rospy.get_param('~controllers', None)
 
     # Load host specific arm configuration
-    self.config_path = rospy.get_param('~config_path', os.path.join(os.environ.get('HOME'), '.ros/configs/manipulation_driver.yaml'))
+    self.config_path = rospy.get_param('~config_path', os.path.join(os.getenv('HOME', '/root'), '.ros/configs/manipulation_driver.yaml'))
     self.custom_configs = []
 
     self.__load_config()
+
+    self.cartesian_planning_enabled = False
 
     # Create default moveit commander if arm specific moveit_commander not supplied
     if not moveit_commander:
@@ -68,6 +74,11 @@ class ManipulationDriver(object):
 
     rospy.Service('arm/get_link_position', GetRelativePose, self.get_link_pose_cb)
 
+    rospy.Service('arm/set_ee_offset', SetPose, self.set_ee_offset_cb)
+
+    rospy.Service('arm/set_cartesian_planning_enabled', SetBool, self.set_cartesian_planning_enabled_cb)
+    rospy.Service('arm/get_cartesian_planning_enabled', SimpleRequest, self.get_cartesian_planning_enabled_cb)
+
     # Setup arm specific services (%see arm driver for implementation)
     rospy.Service('arm/home', Empty, self.home_cb)
     rospy.Service('arm/recover', Empty, self.recover_cb)
@@ -87,16 +98,10 @@ class ManipulationDriver(object):
                     controller['maps'] if 'maps' in controller else None,
                     controller['topic_type']))
 
-        if controller['type'] == 'action_server':
-            self.action_proxies.append(
-                self.create_action_server(
-                    controller['controller'], controller['name'],
-                    controller['maps'] if 'maps' in controller else None,
-                    controller['topic_type']))
-
-
     ## Setup arm specific publishers (%see arm driver for implementation)
     self.velocity_subscriber = rospy.Subscriber('arm/cartesian/velocity', TwistStamped, self.velocity_cb)
+    self.joint_velocity_subscriber = rospy.Subscriber('arm/joint/velocity', JointVelocity, self.joint_velocity_cb)
+
     self.state_publisher = rospy.Publisher('arm/state', ManipulatorState, queue_size=1)
     
     ## Setup generic action servers
@@ -165,11 +170,29 @@ class ManipulationDriver(object):
         self.switcher.switch_controller('position_joint_trajectory_controller')
 
     if goal.goal_pose.header.frame_id == '':
-      goal.goal_pose.header.frame_id = 'panda_link0'
-    
+      goal.goal_pose.header.frame_id = self.base_frame
+
+    if self.moveit_commander.get_planner_ee_link() != self.ee_frame:
+      hTee = pose_msg_to_trans(self.get_link_pose(
+        self.ee_frame, self.moveit_commander.get_planner_ee_link()
+      ).pose)
+      
+      oTh = pose_msg_to_trans(goal.goal_pose.pose)
+
+      desired = np.matmul(oTh, hTee)
+
+      goal.goal_pose.pose = trans_to_pose_msg(desired)
+   
     self.moveit_commander.stop()
-    self.moveit_commander.goto_pose(goal.goal_pose)
-    self.pose_server.set_succeeded(MoveToPoseResult(result=0))
+
+    if self.cartesian_planning_enabled:
+      transformed = self.tf_listener.transformPose(self.base_frame, goal.goal_pose)
+      success = self.moveit_commander.goto_pose_cartesian(transformed.pose)
+
+    else:
+      success = self.moveit_commander.goto_pose(goal.goal_pose)
+
+    self.pose_server.set_succeeded(MoveToPoseResult(result=0 if success else 1))
 
   def gripper_cb(self, goal):
     """
@@ -241,6 +264,15 @@ class ManipulationDriver(object):
     rospy.logwarn('Velocity controller not implemented for this arm')
     pass
 
+  def joint_velocity_cb(self, msg):
+    """
+    ROS Service callback (ARM SPECIFIC) - Moves the joints of the arm at the specified velocities
+
+    Args:
+        msg (rv_msgs/JointVelocity): The velocities for each joint of the manipulator
+    """
+    rospy.logwarn('Joint velocity controller not implemented for this arm')
+    pass
     
   def recover_cb(self, req):
     """
@@ -301,10 +333,43 @@ class ManipulationDriver(object):
     
     self.named_poses[req.pose_name] = self.moveit_commander.get_joint_values()
 
-    with open(self.config_path, 'w') as f:
-      f.write(yaml.dump({ 'named_poses': self.named_poses }))
+    self.__write_config('named_poses', self.named_poses)
     
     return SetNamedPoseResponse(success=True)
+
+  def set_ee_offset_cb(self, request):
+    """
+    ROS Service callback - Sets the pose offset between the robot EE frame and the planning EE frame
+
+    Args:
+        req (rv_msgs/SetPose): The pose offset
+    Returns:
+        True if the pose offset was updated successfully otherwise false
+    """
+    current = self.switcher.get_current_name()
+    self.switcher.switch_controller(None)
+
+    result = self.set_ee_offset(request.pose)
+
+    self.switcher.switch_controller(current)
+    
+    if result:
+      self.__write_config('ee_offset', {
+        'translation': [ request.pose.position.x, request.pose.position.y, request.pose.position.z ],
+        'rotation': [ 
+          request.pose.orientation.x, request.pose.orientation.y, 
+          request.pose.orientation.z, request.pose.orientation.w
+        ]
+      })
+
+    return SetPoseResponse(success=result)    
+
+  def set_cartesian_planning_enabled_cb(self, request):
+    self.cartesian_planning_enabled = request.data
+    return SetBoolResponse(success=True)
+
+  def get_cartesian_planning_enabled_cb(self, request):
+    return SimpleRequestResponse(result=self.cartesian_planning_enabled)
 
   def get_link_pose_cb(self, req):
     """
@@ -331,7 +396,7 @@ class ManipulationDriver(object):
     if not msg.header.frame_id:
       return msg.twist
 
-    (trans, rot) = self.tf_listener.lookupTransform(
+    _, rot = self.tf_listener.lookupTransform(
       msg.header.frame_id, 
       frame_target,
       rospy.Time(0)
@@ -357,6 +422,18 @@ class ManipulationDriver(object):
     result.angular.z = eV[5]
 
     return result
+
+  def set_ee_offset(self, offset):
+    """
+    Calls the arm specific services for setting the offset between the robot EE frame and the planning EE frame (ARM SPECIFIC)
+
+    Args:
+        req (geometry_msgs/Pose): The pose offset
+    Returns:
+        True if successful, False otherwise
+    """
+    rospy.logwarn('Setting ee offset is not available for this arm')
+    return True
 
   def get_link_pose(self, frame_reference, frame_target):
     (trans, rot) = self.tf_listener.lookupTransform(
@@ -414,14 +491,57 @@ class ManipulationDriver(object):
   def __load_config(self):
     self.named_poses = {}
     for config_name in self.custom_configs:
-      config = yaml.load(open(config_name))
-      if 'named_poses' in config:
-        self.named_poses.update(config['named_poses'])
+      try:
+        config = yaml.load(open(config_name))
+        if config and 'named_poses' in config:
+          self.named_poses.update(config['named_poses'])
+      except IOError:
+        rospy.logwarn('Unable to locate configuration file: {}'.format(config_name))
 
     if os.path.exists(self.config_path):
-      config = yaml.load(open(self.config_path))
-      if 'named_poses' in config:
-        self.named_poses.update(config['named_poses'])
+      try:
+        config = yaml.load(open(self.config_path))
+        if config and 'named_poses' in config:
+          self.named_poses.update(config['named_poses'])
+
+        if config and 'ee_offset' in config:
+          offset = Pose()
+          
+          offset.position.x = config['ee_offset']['translation'][0]
+          offset.position.y = config['ee_offset']['translation'][1]
+          offset.position.z = config['ee_offset']['translation'][2]
+
+          offset.orientation.x = config['ee_offset']['rotation'][0]
+          offset.orientation.y = config['ee_offset']['rotation'][1]
+          offset.orientation.z = config['ee_offset']['rotation'][2]
+          offset.orientation.w = config['ee_offset']['rotation'][3]
+          
+          self.set_ee_offset(offset)
+
+      except IOError:
+        pass
+
+  def __write_config(self, key, value):
+    if not os.path.exists(os.path.dirname(self.config_path)):
+      os.makedirs(os.path.dirname(self.config_path))
+
+    config = {}
+
+    try:
+      with open(self.config_path) as f:
+        current = yaml.load(f.read())
+
+        if current:
+          config = current
+
+    except IOError:
+      pass
+
+    config.update({ key: value })
+
+    with open(self.config_path, 'w') as f:
+      f.write(yaml.dump(config))
+    
 
   def run(self):
     rospy.spin()

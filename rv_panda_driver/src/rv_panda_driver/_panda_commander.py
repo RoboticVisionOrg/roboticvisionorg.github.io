@@ -3,15 +3,18 @@ import sys
 import time
 
 from rv_manipulation_driver import ManipulationDriver
+from rv_manipulation_driver import transforms
 
 from std_msgs.msg import Int8
 from geometry_msgs.msg import Twist
 
+from rv_msgs.msg import JointVelocity
 from rv_msgs.msg import ManipulatorState
 from rv_msgs.msg import ActuateGripperAction, ActuateGripperActionResult
 from rv_msgs.srv import SetCartesianImpedanceResponse
 
-from franka_control.srv import SetCartesianImpedance as FrankaSetCartesianImpedance
+from franka_msgs.srv import SetCartesianImpedance as FrankaSetCartesianImpedance
+from franka_msgs.srv import SetEEFrame, SetEEFrameRequest
 from franka_msgs.msg import FrankaState
 from _panda_moveit_commander import PandaMoveItCommander
 
@@ -24,16 +27,21 @@ class PandaCommander(ManipulationDriver):
       rospy.logerr('Unable to load move_group name from rosparam server path: move_group')
       sys.exit(1)
 
+    rospy.wait_for_service('/franka_control/set_EE_frame')
+    self.set_ee = rospy.ServiceProxy('/franka_control/set_EE_frame', SetEEFrame)
+
+    rospy.wait_for_service('/franka_control/set_cartesian_impedance')
+    self.cartesian_impedance_proxy = rospy.ServiceProxy('/franka_control/set_cartesian_impedance', FrankaSetCartesianImpedance)
+
     ManipulationDriver.__init__(self, PandaMoveItCommander(self.move_group))
 
     self.velocity_publisher = rospy.Publisher('/cartesian_velocity_node_controller/cartesian_velocity', Twist, queue_size=1)
+    self.joint_velocity_publisher = rospy.Publisher('/joint_velocity_node_controller/joint_velocity', JointVelocity, queue_size=1)
     self.recover_on_estop = rospy.get_param('/manipulation_commander/recover_on_estop', True)
 
     # handling e-stop
     rospy.Subscriber('/franka_state_controller/franka_states', FrankaState, self.state_cb)
     self.last_estop_state = 0
-
-    self.cartesian_impedance_proxy = rospy.ServiceProxy('/franka_control/set_cartesian_impedance', FrankaSetCartesianImpedance)
 
   def velocity_cb(self, msg):
     if self.switcher.get_current_name() != 'cartesian_velocity_node_controller':
@@ -42,6 +50,12 @@ class PandaCommander(ManipulationDriver):
     result = self.transform_velocity(msg, self.base_frame)
 
     self.velocity_publisher.publish(result)
+
+  def joint_velocity_cb(self, msg):
+    if self.switcher.get_current_name() != 'joint_velocity_node_controller':
+        self.switcher.switch_controller('joint_velocity_node_controller')
+    
+    self.joint_velocity_publisher.publish(msg)
 
   def state_cb(self, msg):
     state = ManipulatorState()
@@ -118,3 +132,8 @@ class PandaCommander(ManipulationDriver):
 
     return SetCartesianImpedanceResponse(success=result.success, error=result.error)
     
+  def set_ee_offset(self, offset):
+    trans = transforms.pose_msg_to_trans(offset)
+    return self.set_ee(SetEEFrameRequest(
+      F_T_EE=list(trans.transpose().flatten())
+    )).success

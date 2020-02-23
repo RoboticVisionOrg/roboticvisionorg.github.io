@@ -237,13 +237,13 @@ controllers:
 <h3 id="extending-rmd">Extending RMD</h3>
 <p>RMD provides basic functionality, but it is often the case that you will need to extend on these capabilities to meet the requirements of a specific manipulator.</p>
 <p>For this purpose, RMD provides access to two core interfaces, <code>manipulation_driver</code> and <code>mantipulation_moveit_commander</code>. </p>
-<p>For an example of how these modules might be extended, see the <a href="https://bitbucket.org/acrv/rv_panda_driver">rv_panda_driver</a> package. The extension provided in this package provides additional functionality, such as clearing errors on the e-stop being released.</p>
+<p>For an example of how these modules might be extended, see the <a href="https://github.com/roboticvisionorg/rv_panda_driver">rv_panda_driver</a> package. The extension provided in this package provides additional functionality, such as clearing errors on the e-stop being released.</p>
 <h3 id="action-api">Action API</h3>
 <p>Out of the box RMD provides access to a simple Pose Control and Named Pose Control API.</p>
 <h4 id="pose-control">Pose Control</h4>
 <ul>
 <li>
-<p><strong>cartesian/pose/goal</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
+<p><strong>cartesian/pose/goal</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
 Moves the end-effector to the requested goal pose w.r.t. the base frame.</p>
 </li>
 <li>
@@ -251,7 +251,7 @@ Moves the end-effector to the requested goal pose w.r.t. the base frame.</p>
 Cancels the currently executing goal.</p>
 </li>
 <li>
-<p><strong>cartesian/pose/feedback</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
+<p><strong>cartesian/pose/feedback</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
 Feedback from the currently executing goal.</p>
 </li>
 <li>
@@ -259,14 +259,14 @@ Feedback from the currently executing goal.</p>
 Status information on goals sent to the driver.</p>
 </li>
 <li>
-<p><strong>cartesian/pose/result</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
+<p><strong>cartesian/pose/result</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPoseGoal</a>)
 The result of the pose goal request.</p>
 </li>
 </ul>
 <h4 id="named-pose-control">Named Pose Control</h4>
 <ul>
 <li>
-<p><strong>cartesian/named_pose/goal</strong> (<a href="https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPoseGoal</a>)
+<p><strong>cartesian/named_pose/goal</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPoseGoal</a>)
 Moves the end-effector to a pre-defined joint configuration.</p>
 </li>
 <li>
@@ -274,7 +274,7 @@ Moves the end-effector to a pre-defined joint configuration.</p>
 Cancels the currently executing goal.</p>
 </li>
 <li>
-<p><strong>cartesian/named_pose/feedback</strong> (<a href="(https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToNamedPose.action)">rv_msgs/MoveToNamedPoseFeedback</a>)
+<p><strong>cartesian/named_pose/feedback</strong> (<a href="(https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action)">rv_msgs/MoveToNamedPoseFeedback</a>)
 Feedback from the currently executing goal.</p>
 </li>
 <li>
@@ -282,7 +282,7 @@ Feedback from the currently executing goal.</p>
 Status information on goals sent to the driver.</p>
 </li>
 <li>
-<p><strong>cartesian/named_pose/result</strong> (<a href="(https://bitbucket.org/acrv/rv_msgs/src/master/action/MoveToNamedPose.action)">rv_msgs/MoveToNamedPoseResult</a>)
+<p><strong>cartesian/named_pose/result</strong> (<a href="(https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action)">rv_msgs/MoveToNamedPoseResult</a>)
 The result of the goal request.</p>
 </li>
 </ul></div>
