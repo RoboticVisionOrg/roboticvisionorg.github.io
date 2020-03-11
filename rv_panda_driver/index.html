@@ -403,30 +403,27 @@ Instructs the driver to remove named poses stored in the indicated config file.<
 </li>
 </ul>
 <h3 id="action-api">Action API</h3>
-<h4 id="cartesian-pose-control">Cartesian Pose Control</h4>
 <ul>
-<li><strong>/arm/cartesian/pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPose.action</a>)
-Moves the end-effector to the requested goal pose w.r.t. the indicated frame id.</li>
-</ul>
-<h4 id="cartesian-servoing-control">Cartesian Servoing Control</h4>
-<ul>
-<li><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ServoToPose.action">rv_msgs/ServoToPose.action</a>)
-Servos the end-effector to the requested goal pose.</li>
-</ul>
-<h4 id="named-pose-control">Named Pose Control</h4>
-<ul>
-<li><strong>/arm/cartesian/named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPose.action</a>)
-Moves the end-effector to a pre-defined joint configuration.</li>
-</ul>
-<h4 id="joint-pose-control">Joint Pose Control</h4>
-<ul>
-<li><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToJointPose.action">rv_msgs/MoveToJointPoseAction</a>)
-Moves the joints of the robot to the indicated positions (radians).</li>
-</ul>
-<h4 id="gripper">Gripper</h4>
-<ul>
-<li><strong>/arm/gripper</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ActuateGripper.action">rv_msgs/ActuateGripper.action</a>)
-Actuates the gripper based on the requested mode. The static mode will move the gripper to the requested width. The grasp mode will attempt to grasp an object of width plus/minus a tolernace factor.</li>
+<li>
+<p><strong>/arm/cartesian/pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPose.action</a>)
+Moves the end-effector to the requested goal pose w.r.t. the indicated frame id.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ServoToPose.action">rv_msgs/ServoToPose.action</a>)
+Servos the end-effector to the requested goal pose.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPose.action</a>)
+Moves the end-effector to a pre-defined joint configuration.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToJointPose.action">rv_msgs/MoveToJointPoseAction</a>)
+Moves the joints of the robot to the indicated positions (radians).</p>
+</li>
+<li>
+<p><strong>/arm/gripper</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ActuateGripper.action">rv_msgs/ActuateGripper.action</a>)
+Actuates the gripper based on the requested mode. The static mode will move the gripper to the requested width. The grasp mode will attempt to grasp an object of width plus/minus a tolernace factor.</p>
+</li>
 </ul></div>
         
         
