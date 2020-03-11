@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rv_manipulation_driver</name>
+  <version>0.2.8</version>
+  <description>The rv_manipulation_driver package</description>
+
+  <maintainer email="g.suddrey@qut.edu.au">Gavin Suddrey</maintainer>
+  <license>BSD</license>
+
+  <url type="website">http://robotics.qut.edu.au</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>moveit_commander</exec_depend>
+  <exec_depend>python-numpy-quaternion</exec_depend>
+  <exec_depend>python-transforms3d</exec_depend>
+  <depend>rv_msgs</depend>
+  
+  <export>
+  </export>
+</package>

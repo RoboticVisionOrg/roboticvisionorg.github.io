@@ -8,10 +8,10 @@
     
     
     
-    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="shortcut icon" href="../../img/favicon.ico">
 
     
-    <title>Home - ACRV</title>
+    <title>Using the Panda - ACRV</title>
     
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -19,9 +19,9 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
     <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="css/bootstrap-custom.min.css" rel="stylesheet">
-    <link href="css/base.min.css" rel="stylesheet">
-    <link href="css/cinder.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/base.min.css" rel="stylesheet">
+    <link href="../../css/cinder.min.css" rel="stylesheet">
 
     
 
@@ -53,7 +53,7 @@
      
 </head>
 
-<body class="homepage" >
+<body>
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -71,7 +71,7 @@
 
             <!-- Main title -->
 
-            <a class="navbar-brand" href=".">ACRV</a>
+            <a class="navbar-brand" href="../..">ACRV</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -80,8 +80,8 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li class="active">
-                        <a href=".">Home</a>
+                    <li >
+                        <a href="../..">Home</a>
                     </li>
                 
                 
@@ -92,13 +92,13 @@
                         
                             
 <li >
-    <a href="panda_setup/">Setup</a>
+    <a href="../../panda_setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="rv_panda_driver/">RV Panda Driver</a>
+    <a href="../../rv_panda_driver/">RV Panda Driver</a>
 </li>
 
                         
@@ -113,7 +113,7 @@
                         
                             
 <li >
-    <a href="rv_manipulation_driver/">RV Manipulation Driver</a>
+    <a href="../">RV Manipulation Driver</a>
 </li>
 
                         
@@ -129,18 +129,8 @@
                             <i class="fas fa-search"></i> Search
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
-                            <i class="fas fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="next" href="panda_setup/">
-                            Next <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </li>
                     <li>
-                        <a href="https://github.com/roboticvisionorg/#/index.md"><i class="fab fa-github"></i> Edit on GitHub</a>
+                        <a href="https://github.com/roboticvisionorg/#/rv_manipulation_driver/examples/README.md"><i class="fab fa-github"></i> Edit on GitHub</a>
                     </li>
             </ul>
         </div>
@@ -152,34 +142,21 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#installing-software">Installing Software</a></li>
-        <li class="first-level "><a href="#resolving-rosdep-issues">Resolving Rosdep Issues</a></li>
+        <li class="first-level active"><a href="#using-the-panda">Using the Panda</a></li>
+            <li class="second-level"><a href="#robot-states">Robot States</a></li>
+                
+                <li class="third-level"><a href="#color-chart">Color Chart</a></li>
+                <li class="third-level"><a href="#unlocking-the-brakes">Unlocking the brakes</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="installing-software">Installing Software</h1>
-<p>Import the RV GPG Key using the following command</p>
-<pre><code class="bash">sudo -E apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv-key 5B76C9B0
-</code></pre>
-
-<p>Add the Robotic Vision repository to the apt sources list directory</p>
-<pre><code class="bash">sudo sh -c 'echo &quot;deb [arch=$(dpkg --print-architecture)] http://roboticvision.org/packages $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/acrv-latest.list'
-</code></pre>
-
-<p>Update your packages list</p>
-<pre><code class="bash">sudo apt update
-</code></pre>
-
-<h1 id="resolving-rosdep-issues">Resolving Rosdep Issues</h1>
-<p>rosdep provides a useful mechanism for retrieving system dependencies required to build ROS packages from source. However, the list of packages maintained by the official ROS index is rather limited.</p>
-<p>As part of developing our Robotic Vision libraries we have frequently discovered dependencies that were simply not available via rosdep. To resolve this issue we have created our own index compliment that provided by ROS.</p>
-<p>To use rosdep to install depencencies needed for building the Robotic Vision libraries from source, please run the following command:</p>
-<pre><code class="bash">sudo sh -c 'echo &quot;yaml https://bitbucket.org/acrv/rv_package_list/raw/HEAD/bionic/sources.yaml&quot; &gt;&gt; /etc/ros/rosdep/sources.list.d/20-default.list'
-rosdep update
-</code></pre>
-
-<p><strong>Note:</strong> This assumes that you have previously installed ROS and have run <code>rosdep init</code></p></div>
+<h1 id="using-the-panda">Using the Panda</h1>
+<h2 id="robot-states">Robot States</h2>
+<h3 id="color-chart">Color Chart</h3>
+<h3 id="unlocking-the-brakes">Unlocking the brakes</h3>
+<p>Before the Panda can be used the motor brakes on the joints of the robot must be released.</p>
+<p>To accomplish</p></div>
         
         
     </div>
@@ -195,12 +172,12 @@ rosdep update
         
     </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
     
-    <script>var base_url = "."</script>
+    <script>var base_url = "../.."</script>
     
-    <script src="js/base.js"></script>
-    <script src="search/main.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../search/main.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -271,8 +248,3 @@ rosdep update
     </body>
 
 </html>
-
-<!--
-MkDocs version : 1.1
-Build Date UTC : 2020-03-11 03:14:47
--->
