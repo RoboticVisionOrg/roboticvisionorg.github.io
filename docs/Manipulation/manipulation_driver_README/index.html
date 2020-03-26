@@ -71,7 +71,7 @@
 
             <!-- Main title -->
 
-            <a class="navbar-brand" href="../..">ACRV</a>
+            <a class="navbar-brand" href="https://roboticvisionorg.github.io/">ACRV</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -146,7 +146,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="https://github.com/roboticvisionorg/#/Manipulation/manipulation_driver_README.md"><i class="fab fa-github"></i> Edit on GitHub</a>
+                        <a href="https://github.com/roboticvisionorg/"><i class="fab fa-github"></i> GitHub</a>
                     </li>
             </ul>
         </div>
@@ -181,7 +181,7 @@
 <p>More concretly, RMD provides a mechanism for advertising high-level topics, services and action_servers for controlling a manipulator, which when called, not only actuate the manipulator based on the provided command, but also hot-swaps in the relevant low-level controllers for that actuation mode. </p>
 <p>Additionally, RMD also provides a convenient mapping to the MoveIt planning framework, and provides controller switching when it receives MoveGoal requests from MoveIt.</p>
 <p>An example configuration of RMD can be seen below:</p>
-<p><img alt="system specification" src="docs/system_spec.png" title="System Specification" /></p>
+<p><img alt="system specification" src="../docs/system_spec.png" title="System Specification" /></p>
 <h2 id="setup">Setup</h2>
 <p>RMD configurations are specified using the YAML file format and should be loaded via rosparam into the local namespace of RMD. This configuration defines: 1) a <code>move_group</code> name to be used when generating goals with the MoveIt planner, and 2) a list of <code>controllers</code> representing of one or more controller descriptions. This format can be seen below. </p>
 <pre><code>move_group: move_group_name
