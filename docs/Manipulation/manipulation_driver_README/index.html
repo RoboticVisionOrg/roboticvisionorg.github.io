@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+
+    
+    <title>RV Manipulation Driver (RMD) - ACRV</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/base.min.css" rel="stylesheet">
+    <link href="../../css/cinder.min.css" rel="stylesheet">
+
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-157261045-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            <a class="navbar-brand" href="../..">ACRV</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Installing Software</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manipulation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">RV Manipulation Driver (RMD)</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../panda_driver_README/">RV Panda Driver</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../panda_setup/">Setup</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Networking <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../Networking/routing/">Routing</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../..">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../panda_driver_README/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/roboticvisionorg/#/Manipulation/manipulation_driver_README.md"><i class="fab fa-github"></i> Edit on GitHub</a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#rv-manipulation-driver-rmd">RV Manipulation Driver (RMD)</a></li>
+            <li class="second-level"><a href="#overview">Overview</a></li>
+                
+            <li class="second-level"><a href="#setup">Setup</a></li>
+                
+                <li class="third-level"><a href="#controller-description">Controller Description</a></li>
+                <li class="third-level"><a href="#example-configuration">Example Configuration</a></li>
+                <li class="third-level"><a href="#extending-rmd">Extending RMD</a></li>
+                <li class="third-level"><a href="#subscribed-topics">Subscribed Topics</a></li>
+                <li class="third-level"><a href="#published-topics">Published Topics</a></li>
+                <li class="third-level"><a href="#services">Services</a></li>
+                <li class="third-level"><a href="#action-api">Action API</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="rv-manipulation-driver-rmd">RV Manipulation Driver (RMD)</h1>
+<p><strong>NOTE: This package defines a generic interface for using a manipulator; it is NOT intended to be run directly. To use the driver with your manipulator, you must use a package that implements the driver for your arm (e.g. "rv_panda_driver")</strong> </p>
+<h2 id="overview">Overview</h2>
+<p>The RV Manipulation Driver (RMD) provides a simple unified mechanism for building high-level interface configurations for seamlessly controlling a broad range of manipulators under different actuation modes.</p>
+<p>More concretly, RMD provides a mechanism for advertising high-level topics, services and action_servers for controlling a manipulator, which when called, not only actuate the manipulator based on the provided command, but also hot-swaps in the relevant low-level controllers for that actuation mode. </p>
+<p>Additionally, RMD also provides a convenient mapping to the MoveIt planning framework, and provides controller switching when it receives MoveGoal requests from MoveIt.</p>
+<p>An example configuration of RMD can be seen below:</p>
+<p><img alt="system specification" src="docs/system_spec.png" title="System Specification" /></p>
+<h2 id="setup">Setup</h2>
+<p>RMD configurations are specified using the YAML file format and should be loaded via rosparam into the local namespace of RMD. This configuration defines: 1) a <code>move_group</code> name to be used when generating goals with the MoveIt planner, and 2) a list of <code>controllers</code> representing of one or more controller descriptions. This format can be seen below. </p>
+<pre><code>move_group: move_group_name
+controllers:
+  - Controller Description 1
+  - Controller Description 1
+</code></pre>
+
+<h4 id="controller-description">Controller Description</h4>
+<p>Each controller description is composed of the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>topic_name</td>
+<td>Specifies the topic name to which RMD will subscribe.</td>
+<td><code>"cartesian/velocity"</code></td>
+</tr>
+<tr>
+<td>topic_type</td>
+<td>The topic type of the subscriber.</td>
+<td><code>"geometry_msgs/Twist"</code></td>
+</tr>
+<tr>
+<td>maps (optional)</td>
+<td>The topic name that RMD will republish on to communicate with the activated low-level controller. If left unspecified, RMD will switch controllers but not republish the received message.</td>
+<td><code>"/cartesian_velocity_node_controller/cartesian_velocity"</code></td>
+</tr>
+<tr>
+<td>controller</td>
+<td>The low-level controller required to achieve the actuation mode described by <code>topic_name</code></td>
+<td><code>"cartesian_velocity_node_controller"</code></td>
+</tr>
+<tr>
+<td>type</td>
+<td>Specifies whether to advertise a subscriber, service or action_server</td>
+<td><code>"subscriber"</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-configuration">Example Configuration</h4>
+<p>An example configuration for the Franka-Emika Panda can be seen below:</p>
+<pre><code>move_group: panda_arm_hand
+controllers:
+  - name: &quot;cartesian/velocity&quot;
+    topic_type: &quot;geometry_msgs/Twist&quot;
+    type: &quot;publisher&quot;
+    controller: &quot;cartesian_velocity_node_controller&quot;
+    maps: &quot;/cartesian_velocity_node_controller/cartesian_velocity&quot;
+  - name: &quot;/move_group/goal&quot;
+    topic_type: &quot;moveit_msgs/MoveGroupActionGoal&quot;
+    type: &quot;publisher&quot;
+    controller: &quot;position_joint_trajectory_controller&quot;
+</code></pre>
+
+<h3 id="extending-rmd">Extending RMD</h3>
+<p>RMD provides basic functionality, but it is often the case that you will need to extend on these capabilities to meet the requirements of a specific manipulator.</p>
+<p>For this purpose, RMD provides access to two core interfaces, <code>manipulation_driver</code> and <code>mantipulation_moveit_commander</code>. </p>
+<p>For an example of how these modules might be extended, see the <a href="https://github.com/roboticvisionorg/rv_panda_driver">rv_panda_driver</a> package. The extension provided in this package provides additional functionality, such as clearing errors on the e-stop being released.</p>
+<h3 id="subscribed-topics">Subscribed Topics</h3>
+<ul>
+<li>
+<p><strong>/arm/cartesian/velocity</strong> (<a href="https://docs.ros.org/api/geometry_msgs/html/msg/Twist.html">geometry_msgs/TwistStamped</a>)
+Moves the end-effector in cartesian space w.r.t. the target frame_id (base frame if no frame_id is set).</p>
+</li>
+<li>
+<p><strong>/arm/joint/velocity</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/msg/JointVelocity.html">rv_msgs/JointVelocity</a>)
+Moves the joints of the manipulator at the requested velocity.</p>
+</li>
+</ul>
+<h3 id="published-topics">Published Topics</h3>
+<ul>
+<li><strong>/arm/state</strong>  (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/msg/ManipulatorState.msg">rv_msgs/ManipulatorState</a>)
+Provides information on the current state of the manipulator including the pose of the end-effector w.r.t. to the base link, whether the manipulator is experiencing a cartesian contact and collision as a bit-wised error state flag.</li>
+</ul>
+<h3 id="services">Services</h3>
+<ul>
+<li>
+<p><strong>/arm/home</strong> (<a href="http://docs.ros.org/jade/api/std_srvs/html/srv/Empty.html">std_srvs/Empty</a>)
+Moves the robot back to its initial ready pose.</p>
+</li>
+<li>
+<p><strong>/arm/recover</strong> (<a href="http://docs.ros.org/jade/api/std_srvs/html/srv/Empty.html">std_srvs/Empty</a>)
+Recovers from collision or limit violation error states that will put the robot into a non-operable state.</p>
+</li>
+<li>
+<p><strong>/arm/stop</strong> (<a href="http://docs.ros.org/jade/api/std_srvs/html/srv/Empty.html">std_srvs/Empty</a>)
+Stops the current motion of the current.</p>
+</li>
+<li>
+<p><strong>/arm/set_ee_offset</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetPose.srv">rv_msgs/SetPose</a>)
+Sets the offset between the end-effector and the wrist of the robot arm.</p>
+</li>
+<li>
+<p><strong>/arm/get_named_poses</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetNamesList.srv">rv_msgs/GetNamesList</a>)
+Gets a list of currently stored named poses (includes both moveit and driver stored named poses).</p>
+</li>
+<li>
+<p><strong>/arm/set_named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetNamedPose.srv">rv_msgs/SetNamedPose</a>)
+Saves the current joint configuration of the panda with the provided pose name.</p>
+</li>
+<li>
+<p><strong>/arm/set_cartesian_impedance</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetCartesianImpedance.srv">rv_msgs/SetCartesianImpedance</a>
+Adjusts the impedenace of the end-effector position in cartesian space.</p>
+</li>
+<li>
+<p><strong>/arm/get_link_position</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetRelativePose.srv">rv_msgs/GetRelativePose</a>)
+A convenience wrapper around the ROS transform lookup service that provides the relative pose of a target frame w.r.t. a reference frame.</p>
+</li>
+<li>
+<p><strong>/arm/set_cartesian_planning_enabled</strong> (<a href="http://docs.ros.org/jade/api/std_srvs/html/srv/SetBool.html">std_srvs/SetBool</a>)
+Forces the path-planner to only consider linear paths when moving moving between poses with /arm/cartesian/pose</p>
+</li>
+<li>
+<p><strong>/arm/get_cartesian_planning_enabled</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SimpleRequest.srv">rv_msgs/SimpleRequest</a>)
+Checks whether the path-planner will only consider linear paths when moving moving between poses with /arm/cartesian/pose</p>
+</li>
+<li>
+<p><strong>/arm/add_named_pose_config</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetNamedPoseConfig.srv">rv_msgs/SetNamedPoseConfig</a>)
+Instructs the driver to load named poses stored in the indicated config file.</p>
+</li>
+<li>
+<p><strong>/arm/get_named_pose_configs</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetNamedPoseConfigs.srv">rv_msgs/GetNamedPoseConfigs</a>)
+Gets the list of config files to check for named poses.</p>
+</li>
+<li>
+<p><strong>/arm/remove_named_pose_config</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetNamedPoseConfig.srv">rv_msgs/SetNamedPoseConfig</a>)
+Instructs the driver to remove named poses stored in the indicated config file.</p>
+</li>
+</ul>
+<h3 id="action-api">Action API</h3>
+<ul>
+<li>
+<p><strong>/arm/cartesian/pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToPose.action">rv_msgs/MoveToPose.action</a>)
+Moves the end-effector to the requested goal pose w.r.t. the indicated frame id.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ServoToPose.action">rv_msgs/ServoToPose.action</a>)
+Servos the end-effector to the requested goal pose.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToNamedPose.action">rv_msgs/MoveToNamedPose.action</a>)
+Moves the end-effector to a pre-defined joint configuration.</p>
+</li>
+<li>
+<p><strong>/arm/cartesian/servo_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/MoveToJointPose.action">rv_msgs/MoveToJointPoseAction</a>)
+Moves the joints of the robot to the indicated positions (radians).</p>
+</li>
+<li>
+<p><strong>/arm/gripper</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/action/ActuateGripper.action">rv_msgs/ActuateGripper.action</a>)
+Actuates the gripper based on the requested mode. The static mode will move the gripper to the requested width. The grasp mode will attempt to grasp an object of width plus/minus a tolernace factor.</p>
+</li>
+</ul></div>
+        
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+        </p>
+
+        
+        
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    
+    <script>var base_url = "../.."</script>
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
