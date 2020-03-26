@@ -1,0 +1,20 @@
+.btn-primary {
+  background-color: #c62033;
+  border-color: #9e1b29;
+}
+.btn-primary:hover { 
+  background-color: #9e1b29!important;
+  border-color: #9e1b29!important; 
+}
+.btn-primary:active { 
+  background-color: #9e1b29!important;
+  border-color: #9e1b29!important; 
+}
+.btn-primary:focus {
+  background-color: #9e1b29!important;
+  border-color: #9e1b29!important;
+}
+
+.algorithm-icon button {
+  font-weight: 800;
+}
