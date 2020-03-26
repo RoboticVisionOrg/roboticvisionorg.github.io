@@ -172,7 +172,7 @@
 <p>To solve this, and allow for message passing between different subnets, we can make use of IP tables and network routing.</p>
 <h2 id="setup">Setup</h2>
 <p>The image below provides an example of a common network topology, where two machines (Machines 1 and 3) exist on seperate networks but share an intermediary machine (Machine 3) that is on both networks. </p>
-<p><img alt="Network Topology" src="images/topology.png" title="Network Topology" /> </p>
+<p><img alt="Network Topology" src="../images/topology.png" title="Network Topology" /> </p>
 <p>To allow for communucation between Machine 1 and 3, we must first add some iptables rules to Machine 2 to allow it to forward messages between networks 1 and 2.</p>
 <pre><code class="bash"># Allow traffic to be forwarded from eth0 to wlan0
 iptables -A FORWARD -i eth0 -j ACCEPT
