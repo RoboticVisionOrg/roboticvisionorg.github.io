@@ -165,7 +165,7 @@
                 
                 <li class="third-level"><a href="#launching-the-driver">Launching the driver</a></li>
                 <li class="third-level"><a href="#moving-the-arm">Moving the arm</a></li>
-                <li class="third-level"><a href="#managing-named-poses">Managing Named Poses</a></li>
+                <li class="third-level"><a href="#named-joint-configurations">Named Joint Configurations</a></li>
                 <li class="third-level"><a href="#subscribed-topics">Subscribed Topics</a></li>
                 <li class="third-level"><a href="#published-topics">Published Topics</a></li>
                 <li class="third-level"><a href="#services">Services</a></li>
@@ -176,35 +176,37 @@
 
 <h1 id="rv-panda-driver">RV Panda Driver</h1>
 <h2 id="overview">Overview</h2>
-<p>The Panda Driver provides a series of components for initalising and controlling the Franka-Emika Panda robotic arm.</p>
-<p>This package provides a simplified interface for controlling the arm in in a variety of articulation modes by extending the <a href="https://github.com/roboticvisionorg/rv_manipulation_driver">RV Manipulation Driver</a> package.</p>
+<p>The Panda Driver provides a convienent ROS interface to the Franka-Emika Panda robotic arm. It provides multiple control modes, and hides the complexity of changing between these modes.</p>
+<p>This package extends the <a href="https://github.com/roboticvisionorg/rv_manipulation_driver">RV Manipulation Driver</a> package.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="launching-the-driver">Launching the driver</h3>
-<p>The Panda Driver can be launched by executing the following command:</p>
-<pre><code class="bash">roslaunch rv_panda_driver robot_bringup.launch
+<p>The Panda Driver is launched by:</p>
+<pre><code class="console">roslaunch rv_panda_driver robot_bringup.launch
 </code></pre>
 
-<p>Other things to note when starting up the Panda:</p>
+<p>When starting up the Panda robot:</p>
 <ul>
-<li>The lights indicate the status of the robot. <ul>
-<li>Blue = happy and ready to move </li>
-<li>White = happy but estopped</li>
+<li>The lights indicate the status of the robot.<ul>
+<li>Blue = happy and ready to move</li>
+<li>White = happy but E-stopped</li>
 <li>Yellow = error</li>
 </ul>
 </li>
 <li>You will need to release the joint locks through the Franka interface</li>
 <li>When operating the arm have the E-stop handy for safety at all times</li>
-<li>When the arm is E-stopped it can be moved freely using the wrist switch </li>
+<li>When the arm is E-stopped the robot can be moved freely using the wrist switch</li>
 </ul>
-<p>To ensure the arm is working once started you can call the home routine. </p>
-<pre><code class="bash">rosservice call /arm/home
+<p>To ensure the arm is working once started you can invoke the home service.</p>
+<pre><code class="console">rosservice call /arm/home
 </code></pre>
 
 <h3 id="moving-the-arm">Moving the arm</h3>
-<p>The Panda Driver provides a number of options for moving the robot arm. These include moving to fixed poses, as well as moving the arm by specifiying cartesian velocities for the end-effector.</p>
+<p>The Panda Driver provides a number of options for moving the robot arm. These include moving to fixed poses, as well as moving the arm by specifiying Cartesian velocities for the end-effector.</p>
 <h4 id="moving-the-end-effector-to-an-arbitrary-pose">Moving the End-Effector to an Arbitrary Pose</h4>
-<p>The following code example moves the end-effector of the Panda robot to an arbitrary position and orientation w.r.t. to the robots base frame.</p>
-<pre><code>import rospy
+<p>The following code example moves the robot end-effector to an arbitrary position and orientation w.r.t. to the robot's base frame.</p>
+<pre><code class="python">#!/usr/bin/env python2
+
+import rospy
 import actionlib
 
 from rv_msgs.msg import MoveToPoseAction, MoveToPoseGoal
@@ -240,8 +242,10 @@ client.wait_for_result()
 </code></pre>
 
 <h4 id="servoing-the-end-effector-to-an-arbitrary-pose">Servoing the End-Effector to an Arbitrary Pose</h4>
-<p>The following code example servos the end-effector of the Panda robot to an arbitrary position and orientation w.r.t. to the robots base frame.</p>
-<pre><code>import rospy
+<p>The following code example servos the robot end-effector to an arbitrary position and orientation w.r.t. to the robot's base frame.</p>
+<pre><code class="python">#!/usr/bin/env python2
+
+import rospy
 import actionlib
 
 from rv_msgs.msg import ServoToPoseAction, ServoToPoseGoal
@@ -276,27 +280,32 @@ client.send_goal(goal)
 client.wait_for_result()
 </code></pre>
 
-<h4 id="moving-the-end-effector-in-cartesian-space">Moving the End-Effector in Cartesian Space</h4>
-<p>The following code example moves the arm at 2cm a second in the z-axis of the base-frame for 5 seconds. For safety reasons the driver has an expected minimum frequency of 100Hz.</p>
-<pre><code>import rospy
+<h4 id="controlling-end-effector-cartesian-velocity">Controlling End-Effector Cartesian Velocity</h4>
+<p>The following code example moves the robot end-effector at 2cm/s in the z-axis w.r.t. robot's base-frame for a total of 5 seconds. For safety reasons the driver has an expected minimum update frequency of 100Hz.</p>
+<pre><code class="python">#!/usr/bin/env python2
+
+import rospy
 import timeit
 from geometry_msgs.msg import TwistStamped
 
 # initialise ros node
 rospy.init_node('cartesian_motion')
 
-# Create the publisher (queue size tells ROS to only publish the latest message)
+# Create the publisher (queue size tells ROS to only publish
+# the latest message)
 publisher = rospy.Publisher('/arm/cartesian/velocity', TwistStamped, queue_size=1)
 
 # Create an initial start time
-start = timeit.default_timer()
+start_timer = timeit.default_timer()
 
-# Create a velocity message that will instruct the robot to move at 2cm a second in the z-axis of the base frame.
+# Create a velocity message that will instruct the robot to
+# move at 2cm a second in the z-axis of the base frame.
 velocity = TwistStamped()
 velocity.twist.linear.z = 0.02
 
-# Publish the velocity message to the panda driver at a frequency of 100Hz
-while (timeit.default_timer() - start) &lt; 5:
+# Publish the velocity message to the Panda driver at a
+# frequency of 100Hz
+while (timeit.default_timer() - start_timer) &lt; 5:
   publisher.publish(velocity)
   rospy.sleep(0.01)
 
@@ -304,22 +313,25 @@ while (timeit.default_timer() - start) &lt; 5:
 publisher.publish(TwistStamped())
 </code></pre>
 
-<h3 id="managing-named-poses">Managing Named Poses</h3>
-<p>While the MoveIt framework provide the ability to store joint configurations as named poses, these must be defined in the MoveIt configuration of the robot and cannot be adjusted during operation. </p>
-<p>The panda driver solves this issue by providing the ability to save and remember joint configurations of the Panda arm for future, while also providing access to named poses provided by moveit.</p>
+<h3 id="named-joint-configurations">Named Joint Configurations</h3>
+<p>In applications we typically define a number of task specific configurations, and it is convienent if these can be assigned names.</p>
+<p>While the MoveIt framework provide the ability to store joint configurations (called <em>named poses</em>), these must be defined in the MoveIt configuration of the robot and cannot be adjusted during operation.</p>
+<p>The Panda Driver solves this issue by providing the ability to save and remember joint configurations of the Panda robot for future use, while also providing access to named poses provided by MoveIt.</p>
 <h4 id="saving-named-poses">Saving Named Poses</h4>
-<p>The following command demonstrates how to the current joint configuration of the robot with the name <em>test_pose</em>:</p>
+<p>To save the current joint configuration of the robot with the name <em>test_pose</em>:</p>
 <pre><code>rosservice call /arm/set_named_pose &quot;pose_name: 'test_pose' overwrite: false&quot;
 </code></pre>
 
 <h4 id="getting-named-poses">Getting Named Poses</h4>
-<p>The following command demonstrates how to get the current set of stored named poses (created either through the driver or moveit)</p>
-<pre><code>rosservice call /arm/get_named_poses
+<p>To get the set of currently stored named joint configurations (created either through the driver or MoveIt)</p>
+<pre><code class="shell">rosservice call /arm/get_named_poses
 </code></pre>
 
 <h4 id="moving-to-a-named-pose">Moving to a Named Pose</h4>
-<p>The following code example demonstrates how to move to a named pose:</p>
-<pre><code>import rospy
+<p>To move to a named named joint configuration:</p>
+<pre><code class="python">#!/usr/bin/env python2
+
+import rospy
 import actionlib
 
 from rv_msgs.msg import MoveToNamedPoseAction, MoveToNamedPoseGoal
@@ -336,12 +348,12 @@ client.send_goal(MoveToNamedPoseGoal(pose_name='test_pose'))
 client.wait_for_result()
 </code></pre>
 
-<p><strong>Note:</strong> The goal pose can be a named pose created either by the driver or moveit. However, the named poses provided by the driver will take priority in the event of a naming conflict.</p>
+<p><strong>Note:</strong> The goal pose can be a named pose created either by the driver or MoveIt. However, the named poses provided by the driver will take priority in the event of a naming conflict.</p>
 <h3 id="subscribed-topics">Subscribed Topics</h3>
 <ul>
 <li>
 <p><strong>/arm/cartesian/velocity</strong> (<a href="https://docs.ros.org/api/geometry_msgs/html/msg/Twist.html">geometry_msgs/TwistStamped</a>)
-Moves the end-effector in cartesian space w.r.t. the target frame_id (base frame if no frame_id is set).</p>
+Moves the end-effector in Cartesian space w.r.t. the target frame_id (base frame if no frame_id is set).</p>
 </li>
 <li>
 <p><strong>/arm/joint/velocity</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/msg/JointVelocity.html">rv_msgs/JointVelocity</a>)
@@ -351,7 +363,7 @@ Moves the joints of the manipulator at the requested velocity.</p>
 <h3 id="published-topics">Published Topics</h3>
 <ul>
 <li><strong>/arm/state</strong>  (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/msg/ManipulatorState.msg">rv_msgs/ManipulatorState</a>)
-Provides information on the current state of the manipulator including the pose of the end-effector w.r.t. to the base link, whether the manipulator is experiencing a cartesian contact and collision as a bit-wised error state flag.</li>
+Provides information on the current state of the manipulator including the pose of the end-effector w.r.t. to the base link, whether the manipulator is experiencing a Cartesian contact and collision as a bit-wised error state flag.</li>
 </ul>
 <h3 id="services">Services</h3>
 <ul>
@@ -373,15 +385,15 @@ Sets the offset between the end-effector and the wrist of the robot arm.</p>
 </li>
 <li>
 <p><strong>/arm/get_named_poses</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetNamesList.srv">rv_msgs/GetNamesList</a>)
-Gets a list of currently stored named poses (includes both moveit and driver stored named poses).</p>
+Gets a list of currently stored named poses (includes both MoveIt and driver stored named poses).</p>
 </li>
 <li>
 <p><strong>/arm/set_named_pose</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetNamedPose.srv">rv_msgs/SetNamedPose</a>)
-Saves the current joint configuration of the panda with the provided pose name.</p>
+Saves the current joint configuration of the robot with the provided pose name.</p>
 </li>
 <li>
 <p><strong>/arm/set_cartesian_impedance</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/SetCartesianImpedance.srv">rv_msgs/SetCartesianImpedance</a>
-Adjusts the impedenace of the end-effector position in cartesian space.</p>
+Adjusts the impedenace of the end-effector position in Cartesian space.</p>
 </li>
 <li>
 <p><strong>/arm/get_link_position</strong> (<a href="https://github.com/roboticvisionorg/rv_msgs/blob/master/srv/GetRelativePose.srv">rv_msgs/GetRelativePose</a>)
